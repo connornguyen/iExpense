@@ -42,17 +42,21 @@ struct ContentView: View {
     //to keep using class Expense insinde the struct
     @State private var expenses = Expenses()
     
+    @State private var color = 1
+    
     @State private var isShowingAddView = false
   
     var body: some View {
         NavigationStack{
             List{
                 ForEach(expenses.items){ item in
+                    let color = checkAmount(item.amount)
                     HStack{
                         VStack{
                             Text(item.name)
                                 .font(.headline)
-                            
+                                .foregroundStyle(color)
+        
                             Text(item.type)
                                 .font(.footnote)
                         }
@@ -61,7 +65,6 @@ struct ContentView: View {
                         
                         Text(item.amount, format: .currency(code: "USD"))
                     }
-                    
                 }
                 .onDelete(perform: removeItem) // delete function applied here
             }
@@ -81,8 +84,16 @@ struct ContentView: View {
     func removeItem(at offset: IndexSet){
         expenses.items.remove(atOffsets: offset)
     }
-    
-    
+    // checkAmount function checks whether the amount is 0-50, 50-100, 100-INFINITY
+    func checkAmount(_ number: Double) -> Color {
+        if number > 50 && number <= 100 {
+            return .yellow
+        }
+        if number > 100 {
+            return .red
+        }
+        return .green
+    }
 }
 
 #Preview {
