@@ -9,7 +9,9 @@ import Observation
 import SwiftUI
 
 // Attribute of ExpenseItem
-struct ExpenseItem {
+// with : Identifiable *it requires unique ID(UUID,String, Int,...), it tells swift that this ExpenseItem is unique, so that we dont need to tell ForEach how to identifie itself. 
+struct ExpenseItem : Identifiable {
+    let id = UUID()
     let name: String
     let type: String
     let amount: Double
@@ -27,7 +29,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack{
             List{
-                ForEach(expenses.items, id: \.name){ item in
+                ForEach(expenses.items){ item in
                     Text(item.name)
                     
                 }
