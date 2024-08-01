@@ -13,12 +13,14 @@ struct AddView: View {
     @State private var type = "Personal"
     @State private var amount = 0.0
     
+    var expenses: Expenses //Make expenses have that attribue of Expenses so we can make them linked in ContentView
+    
     let types = ["Business", "Personal"]
     
     var body: some View {
         NavigationStack{
             Form{
-                TextField("Type in your name", text: $name)
+                TextField("Type in your Expense's name", text: $name)
                 
                 Picker("Type", selection: $type){
                     ForEach(types, id:\.self){
@@ -29,10 +31,16 @@ struct AddView: View {
                     .keyboardType(.decimalPad)
             }
             .navigationTitle("Add a new Expense")
+            .toolbar{
+                Button("Save"){
+                    let item = ExpenseItem(name: name, type: type, amount: amount)
+                    expenses.items.append(item)
+                }
+            }
         }
     }
 }
 
 #Preview {
-    AddView()
+    AddView(expenses: Expenses())
 }
